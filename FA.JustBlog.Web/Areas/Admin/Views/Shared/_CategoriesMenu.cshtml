@@ -1,0 +1,14 @@
+﻿@using FA.JustBlog.Core.Infrastructures;
+@using FA.JustBlog.Models;
+@using FA.JustBlog.ViewModels;
+@using FA.JustBlog.Core.Repositories;
+
+@inject IUnitOfWork unitOfWork
+
+@foreach(var c in unitOfWork.CategoryRepository.GetAllCategories())
+{
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Customer" asp-controller="Post" 
+        asp-route-categoryName="@c.Name" asp-action="PostsByCategory" >@c.Name</a>
+    </li>
+}

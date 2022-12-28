@@ -1,11 +1,14 @@
-﻿using FA.JustBlog.Core.Models;
+﻿using FA.JustBlog.Core.IRepositories;
+using FA.JustBlog.Models;
 
 namespace FA.JustBlog.Core.Infrastructures;
 
 public interface IUnitOfWork : IDisposable
 {
-    GenericRepository<Category> CategoryRepository { get; }
-    GenericRepository<Post> PostRepository { get; }
-    GenericRepository<Tag> TagRepository { get; }
+    public ICategoryRepository CategoryRepository { get; }
+    public IPostRepository PostRepository { get; }
+    public ITagRepository TagRepository { get; }
+    public ICommentRepository CommentRepository { get; }
+
     int SaveChanges();
 }

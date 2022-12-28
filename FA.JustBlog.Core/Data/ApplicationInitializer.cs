@@ -1,17 +1,14 @@
-﻿using FA.JustBlog.Core.Enum;
-using FA.JustBlog.Core.Models;
+﻿using FA.JustBlog.Models;
+using FA.JustBlog.Models.Enum;
+using FA.JustBlog.Utility;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FA.JustBlog.Core.Data
 {
     public static class ApplicationInitializer
     {
-        public static void Seed(this ModelBuilder modelBuilder)
+        public static void SeedBlog(this ModelBuilder modelBuilder)
         {
             List<Category> categories = new()
             {
@@ -142,6 +139,98 @@ namespace FA.JustBlog.Core.Data
                 }
             };
             modelBuilder.Entity<PostTagMap>().HasData(postTagMaps);
+        }
+
+        public static void SeedUsers(this ModelBuilder builder)
+        {
+            ApplicationUser admin = new()
+            {
+                Id = "605ae5b4-c85d-488e-bc90-a3e2aed93759",
+                Name = "admin",
+                UserName = "Admin",
+                Email = "admin@gmail.com",
+                LockoutEnabled = false,
+                PhoneNumber = "1234567890",
+                NormalizedUserName = "Admin",
+                NormalizedEmail = "admin@gmail.com"
+            };
+
+            ApplicationUser contributor = new()
+            {
+                Id = "4ff25c26-e45a-4464-8c43-182fcda3b4a3",
+                Name = "contributor",
+                UserName = "Contributor",
+                Email = "contributor@gmail.com",
+                LockoutEnabled = false,
+                PhoneNumber = "1234567890",
+                NormalizedUserName = "Contributor",
+                NormalizedEmail = "contributor@gmail.com"
+            };
+
+            ApplicationUser user = new()
+            {
+                Id = "85997ef9-9005-4c8d-b923-ae92318047c0",
+                Name = "user",
+                UserName = "User",
+                Email = "user@gmail.com",
+                LockoutEnabled = false,
+                PhoneNumber = "1234567890",
+                NormalizedUserName = "User",
+                NormalizedEmail = "user@gmail.com"
+            };
+
+            PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();
+
+            passwordHasher.HashPassword(admin, "admin");
+            builder.Entity<ApplicationUser>().HasData(admin);
+
+            passwordHasher.HashPassword(contributor, "contributor");
+            builder.Entity<ApplicationUser>().HasData(contributor);
+
+            passwordHasher.HashPassword(user, "user");
+            builder.Entity<ApplicationUser>().HasData(user);
+
+            builder.Entity<IdentityRole>().HasData(
+                    new IdentityRole()
+                    {
+                        Id = "9c0902bb-34ce-46ef-aaca-4c15c26ed1de",
+                        Name = Roles.BLOG_OWNER,
+                        ConcurrencyStamp = "1",
+                        NormalizedName = "Blog Owner"
+                    },
+                    new IdentityRole()
+                    {
+                        Id = "41eab30e-92dc-47b6-a3a6-224b28f9ca92",
+                        Name = Roles.CONTRIBUTOR,
+                        ConcurrencyStamp = "2",
+                        NormalizedName = "Contributor"
+                    },
+                    new IdentityRole()
+                    {
+                        Id = "c0fddeaa-3cd2-42f9-8b62-f06a3f047c16",
+                        Name = Roles.USER,
+                        ConcurrencyStamp = "3",
+                        NormalizedName = "User"
+                    }
+            );
+
+            builder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>()
+                {
+                    UserId = "605ae5b4-c85d-488e-bc90-a3e2aed93759",
+                    RoleId = "9c0902bb-34ce-46ef-aaca-4c15c26ed1de"
+                },
+                new IdentityUserRole<string>()
+                {
+                    UserId = "4ff25c26-e45a-4464-8c43-182fcda3b4a3",
+                    RoleId = "41eab30e-92dc-47b6-a3a6-224b28f9ca92"
+                },
+                new IdentityUserRole<string>()
+                {
+                    UserId = "85997ef9-9005-4c8d-b923-ae92318047c0",
+                    RoleId = "c0fddeaa-3cd2-42f9-8b62-f06a3f047c16"
+                }
+            );
         }
     }
 }

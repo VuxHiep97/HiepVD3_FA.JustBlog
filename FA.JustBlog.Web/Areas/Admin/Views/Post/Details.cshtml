@@ -1,0 +1,87 @@
+﻿@using FA.JustBlog.Models
+@using FA.JustBlog.Utility
+@model PostDetailViewModel
+
+<h1>@Model.Post.Title</h1>
+<hr />
+<div class="container">
+	<div class="row">
+		<div class="col-sm-10">
+
+			<p>
+				<span style="font-style:italic;">
+					Posted @Model.Post.PostedOn.TimeCompareToNow() with rate @Model.Post.Rate.ToString("#.##") by @Model.Post.ViewCount
+				</span>
+				<br>
+				<span style="color:burlywood; font-weight:bold;">@Html.Raw(Model.Post.ShortDescription)</span>
+				<br>
+				@Html.Raw(Model.Post.PostContent)
+			</p>
+			<p>
+				Category:
+				<a asp-area="" asp-controller="Post" asp-action="PostsByCategory" asp-route-categoryName="@Model.Category.Name"> @Model.Category.Description</a><br>
+			</p>
+			<p>
+				Tag: @foreach (var tag in @Model.TagList)
+				{
+					<a asp-controller="Post" asp-action="PostsByTagName" asp-route-tagName="@tag.Name"
+				   style="background-color:black; color:white; text-decoration:underline; padding:15px;">@tag.Name</a>
+				}
+			</p>
+			@if (User.IsInRole(Roles.BLOG_OWNER))
+			{
+				<a class="btn btn-secondary btn-sm" asp-area="Admin" asp-controller="Comment" asp-action="Create" asp-route-postId="@Model.Post.Id">
+					Create Comment
+				</a>
+			}
+		</div>
+
+		<div class="col-sm-2">
+			@if (User.IsInRole(Roles.BLOG_OWNER) || User.IsInRole(Roles.CONTRIBUTOR))
+			{
+				<a class="btn btn-primary" style="min-width:100px" asp-area="Admin" asp-controller="Post" asp-action="Update" asp-route-postId="@Model.Post.Id">Edit Post</a>
+			}
+			@if (User.IsInRole(Roles.BLOG_OWNER))
+			{
+				<a class="btn btn-danger" style="min-width:100px" asp-area="Admin" asp-controller="Post" asp-action="Delete" asp-route-postId="@Model.Post.Id">Delete Post</a>
+			}
+		</div>
+	</div>
+</div>
+
+
+@{
+	foreach (var comment in @Model.CommentList.OrderByDescending(x => x.PostedOn))
+	{
+		<hr />
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-10">
+					<h4>@Html.Raw(comment.CommentHeader)</h4>
+					<p style="color:burlywood;">
+						@Html.Raw(comment.CommentText)<br>
+						Comment by @comment.Name at @comment.PostedOn
+						<br>
+					</p>
+				</div>
+				
+					<div class="col-sm-2">
+						<a class="btn btn-secondary btn-sm" style="min-width:100px" asp-area="Admin" asp-controller="Comment" asp-action="Details" asp-route-id="@comment.Id">Details Comment</a>
+						@if (User.IsInRole(Roles.BLOG_OWNER) || User.IsInRole(Roles.CONTRIBUTOR))
+						{
+							<a class="btn btn-primary btn-sm" style="min-width:100px" asp-area="Admin" asp-controller="Comment" asp-action="Update" asp-route-id="@comment.Id">Edit Comment</a>
+						}
+						@if (User.IsInRole(Roles.BLOG_OWNER))
+						{
+							<a class="btn btn-danger btn-sm" style="min-width:100px" asp-area="Admin" asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.Id">Delete Comment</a>
+						}
+					</div>
+			</div>
+		</div>
+
+	}
+}
+
+<p>
+
+</p>	

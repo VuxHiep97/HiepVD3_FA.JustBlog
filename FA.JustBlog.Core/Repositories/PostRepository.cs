@@ -1,8 +1,8 @@
 ﻿using FA.JustBlog.Core.DataContext;
-using FA.JustBlog.Core.Enum;
+using FA.JustBlog.Models.Enum;
 using FA.JustBlog.Core.Infrastructures;
 using FA.JustBlog.Core.IRepositories;
-using FA.JustBlog.Core.Models;
+using FA.JustBlog.Models;
 
 namespace FA.JustBlog.Core.Repositories;
 
@@ -43,9 +43,11 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
 
     public Post? FindPost(int postId) => context.Posts.FirstOrDefault(p => p.Id == postId && p.Status == Status.Actived);
 
+    public Post? FindPost(string title, int year, int month) => context.Posts.FirstOrDefault(p => p.PostedOn.Year == year && p.PostedOn.Month == month && p.Title == title);
+
     public IList<Post> GetAllPosts() => context.Posts.Where(p => p.Status == Status.Actived).ToList();
 
-    public IList<Post> GetHighestPosts(int size)=> context.Posts.OrderByDescending(p => p.TotalRate).Take(size).ToList();
+    public IList<Post> GetHighestPosts(int size) => context.Posts.OrderByDescending(p => p.TotalRate).Take(size).ToList();
 
     public IList<Post> GetLatestPost(int size) => context.Posts.Where(p => p.Status == Status.Actived).OrderByDescending(p => p.PostedOn).Take(size).ToList();
 

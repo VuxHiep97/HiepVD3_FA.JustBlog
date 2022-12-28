@@ -28,10 +28,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Post" asp-action="Index">Post</a></li>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="About">About</a></li>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="post.html">Sample Post</a></li>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">Contact</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="Admin" asp-controller="Post" asp-action="Index">Blog management</a>
+                        <partial name="_CategoriesMenu" />
                 </ul>
                 <partial name="_LoginPartial" />
             </div>
@@ -39,7 +41,7 @@
     </nav>
     <!-- Page Header-->
     <header class="masthead" style="@ViewData["Background-Image"]">
-        <div class="container">
+        <div class="container position-relative px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <div class="site-heading">
@@ -52,10 +54,10 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            <div class="col-lg-9 mx-auto">
+            <div class="mx-auto">
                 @RenderBody()
             </div>
-            <div class="col-lg-3 mx-auto">
+            <div class="col-lg-3 mx-auto table-bordered box-shadow shadow-lg">
                 <partial name="_AboutCardPartial" />
             </div>
         </main>

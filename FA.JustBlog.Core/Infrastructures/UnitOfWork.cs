@@ -1,65 +1,70 @@
 ﻿using FA.JustBlog.Core.DataContext;
-using FA.JustBlog.Core.Models;
+using FA.JustBlog.Core.IRepositories;
+using FA.JustBlog.Core.Repositories;
+using FA.JustBlog.Models;
 
 namespace FA.JustBlog.Core.Infrastructures;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly JustBlogContext context = new();
-
-    private GenericRepository<Category> categoryRepository = null!;
-    private GenericRepository<Post> postRepository = null!;
-    private GenericRepository<Tag> tagRepository = null!;
-
-    private bool disposed = false;
+    private readonly JustBlogContext context;
+    private ICategoryRepository categoryRepository = null!;
+    private IPostRepository postRepository = null!;
+    private ITagRepository tagRepository = null!;
+    private ICommentRepository commentRepository = null!;
 
     public UnitOfWork(JustBlogContext context)
     {
         this.context = context;
     }
 
-    public GenericRepository<Category> CategoryRepository
+    public ICategoryRepository CategoryRepository
     {
         get
         {
-            categoryRepository ??= new GenericRepository<Category>(context);
+            categoryRepository ??= new CategoryRepository(context);
 
             return categoryRepository;
         }
     }
-    public GenericRepository<Post> PostRepository
+
+    public IPostRepository PostRepository
     {
         get
         {
-            postRepository ??= new GenericRepository<Post>(context);
+            postRepository ??= new PostRepository(context);
 
             return postRepository;
         }
     }
-    public GenericRepository<Tag> TagRepository
+
+    public ITagRepository TagRepository
     {
         get
         {
-            tagRepository ??= new GenericRepository<Tag>(context);
+            tagRepository ??= new TagRepository(context);
 
             return tagRepository;
         }
     }
 
-    public int SaveChanges() => context.SaveChanges();
-
-    protected virtual void Dispose(bool disposing)
+    public ICommentRepository CommentRepository
     {
-        if (!disposed)
-            if (disposing)
-                context.Dispose();
+        get
+        {
+            commentRepository ??= new CommentRepository(context);
 
-        disposed = true;
+            return commentRepository;
+        }
     }
 
     public void Dispose()
     {
-        Dispose(true);
-        GC.SuppressFinalize(this);
+        context.Dispose();
+    }
+
+    public int SaveChanges()
+    {
+        return context.SaveChanges();
     }
 }

@@ -1,0 +1,6 @@
+﻿@model IEnumerable<TagViewModel>
+
+@foreach (var tag in Model)
+{
+	<a style="text-decoration:underline" asp-action="Details" asp-route-id="@tag.Id">#@tag.Name</a><span>&nbsp&nbsp</span>
+}

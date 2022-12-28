@@ -1,0 +1,20 @@
+﻿@model IEnumerable<PostViewModel>
+
+@foreach (var post in Model)
+{
+    <h3>
+        <a style="color:deepskyblue; text-decoration:underline" asp-area="Admin" asp-controller="Post"
+       asp-action="Details" asp-route-id="@post.Id">
+            @post.Title
+        </a>
+    </h3>
+    <p>
+        <span style="font-style:italic;">
+            Posted @post.PostedOn.TimeCompareToNow() with rate @post.Rate.ToString("#.##") by @post.ViewCount
+        </span>
+        <br>
+        <span style="color:burlywood; font-weight:bold;">@post.ShortDescription</span>
+        <br>
+        @post.PostContent
+    </p>
+}

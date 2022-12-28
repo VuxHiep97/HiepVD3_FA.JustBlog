@@ -1,0 +1,31 @@
+﻿@using FA.JustBlog.Core.Infrastructures
+@model IEnumerable<PostViewModel>
+
+@inject IMapper mapper
+@inject IUnitOfWork unitOfWork
+@{
+    ViewData["Title"] = "Index";
+    ViewData["Background-Image"] = @"background-image: url('/assets/img/home-bg.jpg')";
+    ViewData["Site-Heading"] = "Just Blog";
+    ViewData["Sub-Heading"] = "A Blog Theme by Start Bootstrap";
+
+    IEnumerable<PostViewModel> allPost = mapper.Map<IEnumerable<PostViewModel>>(unitOfWork.PostRepository.GetAllPosts());
+    IEnumerable<PostViewModel> mostFiveViewedPosts = mapper.Map<IEnumerable<PostViewModel>>(unitOfWork.PostRepository.GetMostViewedPost(5));
+    IEnumerable<PostViewModel> latestFivePost = mapper.Map<IEnumerable<PostViewModel>>(unitOfWork.PostRepository.GetLatestPost(5));
+    IEnumerable<TagViewModel> tagsList = mapper.Map<IEnumerable<TagViewModel>>(unitOfWork.TagRepository.GetEntities().OrderByDescending(x => x.Count));
+}
+
+<div class="row">
+    <h1>All Post!</h1>
+    <div class="mb-8 col-8">
+        <partial name="_ListPosts" model="@allPost" />
+    </div>
+    <div class="mb-4 col-4">
+        <h1>Most View Post!</h1>
+        <partial name="_ListPosts" model="@mostFiveViewedPosts" />
+        <h1>Lasted Post!</h1>
+        <partial name="_ListPosts" model="@latestFivePost" />
+        <h1>Popular Tags!</h1>
+        <partial name="_PopularTags" model="@tagsList" />
+    </div>
+</div>

@@ -1,0 +1,9 @@
+﻿@inject IUnitOfWork unitOfWork
+
+@foreach(var category in unitOfWork.CategoryRepository.GetAllCategories())
+{
+    <li class="nav-item">
+        <a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="Customer" asp-controller="Post"
+       asp-route-categoryName="@category.Name" asp-action="PostsByCategory">@category.Name</a>
+    </li>
+}

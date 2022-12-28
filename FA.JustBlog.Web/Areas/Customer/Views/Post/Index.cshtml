@@ -1,0 +1,21 @@
+﻿@using FA.JustBlog.Models
+@model IEnumerable<PostViewModel>
+
+@if (TempData["success"] != null)
+{
+    <h1>@(TempData["success"])!</h1>
+}
+@if (TempData["Error"] != null)
+{
+    <h1>@(TempData["Error"])!</h1>
+}
+
+<h1>All posts!</h1>
+
+@foreach (var post in Model)
+{
+    <hr />
+    <a asp-action="Details2" asp-route-year="@post.PostedOn.Year" asp-route-month="@post.PostedOn.Month" asp-route-title="@post.Title">@post.Title</a>
+    <p>Posted @post.PostedOn with rate @post.Rate.ToString("#.##") by @post.ViewCount</p>
+    <p>@post.PostContent</p>
+}

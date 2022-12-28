@@ -1,5 +1,5 @@
 ﻿using FA.JustBlog.Core.Infrastructures;
-using FA.JustBlog.Core.Models;
+using FA.JustBlog.Models;
 
 namespace FA.JustBlog.Core.IRepositories;
 

@@ -1,4 +1,4 @@
-﻿using FA.JustBlog.Web.Models;
+﻿using FA.JustBlog.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

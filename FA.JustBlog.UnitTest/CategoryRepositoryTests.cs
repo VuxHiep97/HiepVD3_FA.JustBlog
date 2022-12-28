@@ -1,8 +1,8 @@
 ﻿using FA.JustBlog.Core.DataContext;
-using FA.JustBlog.Core.Enum;
 using FA.JustBlog.Core.IRepositories;
-using FA.JustBlog.Core.Models;
 using FA.JustBlog.Core.Repositories;
+using FA.JustBlog.Models;
+using FA.JustBlog.Models.Enum;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 

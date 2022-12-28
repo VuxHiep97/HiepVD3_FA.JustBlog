@@ -1,7 +1,6 @@
-﻿using FA.JustBlog.Core.Models;
+﻿using FA.JustBlog.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reflection.Emit;
 
 namespace FA.JustBlog.Core.Configurations;
 

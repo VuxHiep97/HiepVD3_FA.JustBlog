@@ -1,12 +1,14 @@
-﻿using FA.JustBlog.Core.Configurations;
-using FA.JustBlog.Core.Data;
-using FA.JustBlog.Core.Models;
+﻿using FA.JustBlog.Core.Data;
+using FA.JustBlog.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace FA.JustBlog.Core.DataContext;
 
-public class JustBlogContext : DbContext
+public class JustBlogContext : IdentityDbContext
 {
+    public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
     public virtual DbSet<Category> Categories { get; set; } = null!;
     public virtual DbSet<Post> Posts { get; set; } = null!;
     public virtual DbSet<Tag> Tags { get; set; } = null!;
@@ -27,12 +29,15 @@ public class JustBlogContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CategoryConfiguration).Assembly);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PostConfiguration).Assembly);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TagConfiguration).Assembly);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PostTagMapConfiguration).Assembly);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CommentConfiguration).Assembly);
+        var types = modelBuilder.Model.GetEntityTypes().Select(t => t.ClrType).ToHashSet();
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            Assembly.GetExecutingAssembly(),
+            t => t.GetInterfaces()
+                .Any(i => i.IsGenericType
+                    && i.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>)
+                    && types.Contains(i.GenericTypeArguments[0]))
+            );
 
-        modelBuilder.Seed();
+        modelBuilder.SeedBlog();
     }
 }

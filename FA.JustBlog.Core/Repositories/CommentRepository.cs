@@ -1,7 +1,7 @@
 ﻿using FA.JustBlog.Core.DataContext;
 using FA.JustBlog.Core.Infrastructures;
 using FA.JustBlog.Core.IRepositories;
-using FA.JustBlog.Core.Models;
+using FA.JustBlog.Models;
 
 namespace FA.JustBlog.Core.Repositories;
 
